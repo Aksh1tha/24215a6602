@@ -12,9 +12,7 @@ REMOTE_SERVER_URL = "http://4.224.186.213/evaluation-service"
 CLIENT_ID = os.getenv("CLIENT_ID")
 CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 
-# =====================================================================
-# AUTHENTICATION: Self-healing token refresh
-# =====================================================================
+#authentication
 def get_fresh_token():
     try:
         response = requests.post(f"{REMOTE_SERVER_URL}/auth", json={
@@ -27,9 +25,7 @@ def get_fresh_token():
         print(f"Auth error: {e}")
     return None
 
-# =====================================================================
-# OPTIMIZATION: 0/1 Knapsack Algorithm
-# =====================================================================
+#optimization
 def compute_best_allocation(job_list, available_limit):
     total_jobs = len(job_list)
     matrix = [[0 for _ in range(available_limit + 1)] for _ in range(total_jobs + 1)]
@@ -53,10 +49,7 @@ def compute_best_allocation(job_list, available_limit):
             w -= int(job_list[i-1].get("duration", job_list[i-1].get("Duration", 0)))
     
     return selected[::-1], matrix[total_jobs][available_limit]
-
-# =====================================================================
-# ROUTES
-# =====================================================================
+#routes
 @app.route('/depots/<depot_id>', methods=['GET'])
 def get_schedule(depot_id):
     token = get_fresh_token()
